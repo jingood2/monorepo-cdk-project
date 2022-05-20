@@ -52,7 +52,7 @@ jobs:
         working-directory: projects/github-oidc-provider
 
       - name: cdk build 
-        run: npm run build 
+        run: npm run synth
         working-directory: projects/github-oidc-provider
           
       - name: cdk deploy

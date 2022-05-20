@@ -52,7 +52,7 @@ jobs:
         working-directory: projects/{{ROUTE}}
 
       - name: cdk build 
-        run: npm run build 
+        run: npm run synth
         working-directory: projects/{{ROUTE}}
           
       - name: cdk deploy
