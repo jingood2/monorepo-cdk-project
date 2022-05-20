@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 1
 
       - name: install npm
-        run: sudo apt update -y && sudo apt install projen nodejs yarn -y
+        run: sudo apt update -y && sudo apt install projen nodejs -y
         working-directory: projects/cdk-s3
 
       - name: Install dependencies
