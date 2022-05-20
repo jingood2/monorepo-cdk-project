@@ -1,0 +1,70 @@
+name: "github-oidc-provider"
+
+on:
+  push:
+    branches:
+      - main
+      #- develop
+    paths:
+      - "projects/github-oidc-provider/**"
+      - ".github/workflows/github-oidc-provider.yaml"
+env:
+  CI: "true"
+  TESTING_STACK_NAME: "infra-github-oidc-provider-dev"
+  GITHUB_ASSUME_ROLE: arn:aws:iam::037729278610:role/github-deploy-role
+  TESTING_REGION: ap-northeast-2
+  PROD_STACK_NAME: "infra-github-oidc-provider-prod"
+  PROD_REGION: ap-northeast-2
+
+
+jobs:
+  cdk_build:
+    runs-on: ubuntu-latest
+     # These permissions are needed to interact with GitHub's OIDC Token endpoint
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: projects/github-oidc-provider
+
+      - name: assume role
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: ${{ env.GITHUB_ASSUME_ROLE }}
+          role-session-name: github-session
+          aws-region: ap-northeast-2
+
+      - name: cdk diff
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: 'diff'
+          actions_comment: true
+
+      - name: cdk synth
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: 'synth'
+          cdk_version: '2.24.1'
+          working_dir: 'projects/github-oidc-provider'
+          
+      - name: cdk deploy
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: 'deploy'
+          cdk_stack: 'bootstrap-dev'
+          cdk_args: '--require-approval never'
+          actions_comment: false
+          working_dir: 'projects/github-oidc-provider'
