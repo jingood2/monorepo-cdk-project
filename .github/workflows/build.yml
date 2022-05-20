@@ -19,10 +19,16 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
       - name: Install dependencies
         run: yarn install --check-files
+        working-directory: projects/cdk-s3
+
       - name: build
         run: npx projen build
+        working-directory: projects/cdk-s3
       - id: self_mutation
         name: Find mutations
         run: |-
