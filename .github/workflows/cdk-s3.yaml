@@ -36,10 +36,9 @@ jobs:
           node-version: "14"
 
       - name: Install dependencies
-        run: |-
-          pwd || ls -al
-          yarn install --check-files
-        working-directory: projects/cdk-s3
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: projects/cdk-s3
 
       - name: assume role
         uses: aws-actions/configure-aws-credentials@master
