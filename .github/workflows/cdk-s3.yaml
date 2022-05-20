@@ -52,9 +52,9 @@ jobs:
         working-directory: projects/cdk-s3
 
       - name: cdk build 
-        run: npm run synth
+        run: npm run build 
         working-directory: projects/cdk-s3
           
       - name: cdk deploy
-        run: npm run deploy --all 
+        run: npm run deploy --all --require-approval never
         working-directory: projects/cdk-s3
