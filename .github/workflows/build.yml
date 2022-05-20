@@ -27,7 +27,7 @@ jobs:
         working-directory: projects/cdk-s3
 
       - name: build
-        run: npx projen build
+        run: npx projen synth
         working-directory: projects/cdk-s3
       - id: self_mutation
         name: Find mutations
