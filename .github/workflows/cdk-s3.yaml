@@ -56,5 +56,5 @@ jobs:
         working-directory: projects/cdk-s3
           
       - name: cdk deploy
-        run: npm run deploy --all --require-approval never 
+        run: yarn cdk deploy --all --require-approval never 
         working-directory: projects/cdk-s3
