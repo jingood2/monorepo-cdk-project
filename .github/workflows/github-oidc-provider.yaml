@@ -56,5 +56,5 @@ jobs:
         working-directory: projects/github-oidc-provider
           
       - name: cdk deploy
-        run: npm run deploy --all --require-approval never
+        run: npm run deploy --all 
         working-directory: projects/github-oidc-provider
