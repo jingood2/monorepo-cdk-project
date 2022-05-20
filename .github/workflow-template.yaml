@@ -1,0 +1,61 @@
+name: "{{ROUTE}}"
+
+on:
+  push:
+    branches:
+      - main
+      #- develop
+    paths:
+      - "projects/{{ROUTE}}/**"
+      - ".github/workflows/{{ROUTE}}.yaml"
+env:
+  CI: "true"
+  TESTING_STACK_NAME: "infra-{{ROUTE}}-dev"
+  GITHUB_ASSUME_ROLE: arn:aws:iam::037729278610:role/github-deploy-role
+  TESTING_REGION: ap-northeast-2
+  PROD_STACK_NAME: "infra-{{ROUTE}}-prod"
+  PROD_REGION: ap-northeast-2
+
+
+jobs:
+  cdk_build:
+    runs-on: ubuntu-latest
+     # These permissions are needed to interact with GitHub's OIDC Token endpoint
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install dependencies
+        run: |-
+          pwd || ls -al
+          yarn install --check-files
+        working-directory: projects/{{ROUTE}}
+
+      - name: assume role
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: ${{ env.GITHUB_ASSUME_ROLE }}
+          role-session-name: github-session
+          aws-region: ap-northeast-2
+
+      - name: cdk diff
+        run: npm run diff
+        working-directory: projects/{{ROUTE}}
+
+      - name: cdk build 
+        run: npm run build 
+        working-directory: projects/{{ROUTE}}
+          
+      - name: cdk deploy
+        run: npm run deploy --all --require-approval never
+        working-directory: projects/{{ROUTE}}
