@@ -31,13 +31,12 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "14"
+      - name: install npm
+        run: sudo apt update -y && sudo apt install projen nodejs yarn -y
+        working-directory: projects/github-oidc-provider
 
       - name: Install dependencies
         run: |-
-          default | node .projenrc.js
           yarn install --check-files
         working-directory: projects/github-oidc-provider
 
