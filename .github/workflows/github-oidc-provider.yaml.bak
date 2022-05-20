@@ -23,7 +23,7 @@ jobs:
      # These permissions are needed to interact with GitHub's OIDC Token endpoint
     permissions:
       id-token: write
-      contents: read
+      contents: write
     env:
       CI: "true"
     steps:
@@ -48,13 +48,23 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: cdk diff
-        run: npm run diff
-        working-directory: projects/github-oidc-provider
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: 'diff'
+          actions_comment: true
 
-      - name: cdk build 
-        run: npm run synth
-        working-directory: projects/github-oidc-provider
+      - name: cdk synth
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: 'synth'
+          cdk_version: '2.24.1'
+          working_dir: 'projects/github-oidc-provider'
           
       - name: cdk deploy
-        run: yarn cdk deploy --all --require-approval never 
-        working-directory: projects/github-oidc-provider
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: 'deploy'
+          cdk_stack: 'bootstrap-dev'
+          cdk_args: '--require-approval never'
+          actions_comment: false
+          working_dir: 'projects/github-oidc-provider'
