@@ -37,7 +37,7 @@ jobs:
 
       - name: Install dependencies
         run: |-
-          pwd || ls -al
+          default | node .projenrc.js
           yarn install --check-files
         working-directory: projects/{{ROUTE}}
 
