@@ -1,4 +1,5 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 
 export class MyStack extends Stack {
@@ -6,6 +7,7 @@ export class MyStack extends Stack {
     super(scope, id, props);
 
     // define resources here...
+    new s3.Bucket(this, 'CreateBucket');
   }
 }
 
