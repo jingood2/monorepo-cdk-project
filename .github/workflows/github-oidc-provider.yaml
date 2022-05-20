@@ -44,7 +44,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@master
         with:
           role-to-assume: ${{ env.GITHUB_ASSUME_ROLE }}
-          role-session-name: github-oidc-session
+          role-session-name: github-session
           aws-region: ap-northeast-2
 
       - name: cdk diff
