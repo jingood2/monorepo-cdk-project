@@ -40,12 +40,14 @@ jobs:
         with:
           working-directory: projects/github-oidc-provider
 
-      - name: assume role
-        uses: aws-actions/configure-aws-credentials@master
+      - name: Assume Role
+        uses: youyo/awscredswrap@master
         with:
-          role-to-assume: ${{ env.GITHUB_ASSUME_ROLE }}
-          role-session-name: github-session
-          aws-region: ap-northeast-2
+          role_arn: ${{ env.GITHUB_ASSUME_ROLE }}
+          duration_seconds: 3600
+          role_session_name: 'awscredswrap@GitHubActions'
+        env:
+          AWS_DEFAULT_REGION: ap-northeast-2
 
       - name: cdk diff
         uses: youyo/aws-cdk-github-actions@v2
