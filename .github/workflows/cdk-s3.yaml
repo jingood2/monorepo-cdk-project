@@ -52,7 +52,7 @@ jobs:
         working-directory: projects/cdk-s3
 
       - name: cdk build 
-        run: npm run build 
+        run: npm run synth
         working-directory: projects/cdk-s3
           
       - name: cdk deploy
