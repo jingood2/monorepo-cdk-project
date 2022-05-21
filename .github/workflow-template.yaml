@@ -11,7 +11,7 @@ on:
 env:
   CI: "true"
   TESTING_STACK_NAME: "infra-{{ROUTE}}-dev"
-  GITHUB_ASSUME_ROLE: arn:aws:iam::037729278610:role/github-deploy-role
+  GITHUB_ASSUME_ROLE: arn:aws:iam::037729278610:role/github-deploy-v2-role
   TESTING_REGION: ap-northeast-2
   PROD_STACK_NAME: "infra-{{ROUTE}}-prod"
   PROD_REGION: ap-northeast-2
