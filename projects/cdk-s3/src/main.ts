@@ -19,7 +19,7 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, 'cdk-s3-develop', { env: devEnv });
+new MyStack(app, 'cdk-s3-develop-update', { env: devEnv });
 // new MyStack(app, 'cdk-s3-prod', { env: prodEnv });
 
 app.synth();
