@@ -18,7 +18,7 @@ export class MyStack extends Stack {
       owner: "jingood2", // your repository owner (organization or user) name
       repo: "github-monorepo-ci", // your repository name (without the owner name)
       roleName: "github-deploy-v2-role",
-      description: "This role deploys stuff to AWS",
+      description: "This role deploys stuff to AWS v2",
       maxSessionDuration: Duration.hours(2),
     });
 
