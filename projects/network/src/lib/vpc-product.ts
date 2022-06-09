@@ -53,7 +53,6 @@ export class VPCProduct extends servicecatalog.ProductStack {
     // 1. VPC
     this.vpc = new ec2.Vpc(this, "VPC", {
       vpcName: `${ENV.valueAsString}-vpc`,
-      cidr: "10.0.0.0/18",
       natGatewayProvider:
         ENV.valueAsString !== "prod"
           ? ec2.NatProvider.instance({
