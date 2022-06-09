@@ -9,14 +9,13 @@ export class MyStack extends Stack {
     super(scope, id, props);
 
     // define resources here...
-    
+
     new cdk.CfnParameter(this, "VpcCidrBlock", {
       type: "String",
       default: "10.0.0.0/18",
       description: "CIDR Block for VPC. Must be /26 or larger CIDR block.",
       allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
     });
-
 
     // Create a product from a stack
     new servicecatalog.CloudFormationProduct(this, "VpcProduct", {
