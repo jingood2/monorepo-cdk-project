@@ -1538,16 +1538,6 @@
         "aws:cdk:path": "VPCWithECSCLuster/Cluster/Resource"
       },
       "Condition": "EnableCreateECSCluster"
-    },
-    "CDKMetadata": {
-      "Type": "AWS::CDK::Metadata",
-      "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAA/0WPT2vDMAzFP0vvjraksHsJZfRSTDp6HYqjMbWJXWy5ZYR899lNQ07vp6eH/lRQVvC+wUcoTHctem5hPAmaq6p/rEaPAwn5XNTOdizsrErh75FMBeP5ZnLrrGulY9uzOcXWkmRvpcZFoS9se1r91duF4Azjc/ASzrA/6CxHlE8UeuCf0p7vCdfBB5tOS7wE5kte1U7SF78DWZkUmQBj3cewvDLjNKmGgovePDcuPCnrOoJLeLuXH1BuodpcAnPhoxUeCJpZ/wEyLloMOgEAAA=="
-      },
-      "Metadata": {
-        "aws:cdk:path": "VPCWithECSCLuster/CDKMetadata/Default"
-      },
-      "Condition": "CDKMetadataAvailable"
     }
   },
   "Outputs": {
