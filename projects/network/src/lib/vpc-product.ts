@@ -26,4 +26,5 @@ export class VPCProduct extends servicecatalog.ProductStack {
     new cfn_inc.CfnInclude(this, 'vpc-3tier-with-zcp-product-template', {
       templateFile: path.join(__dirname, './vpc-3tier-zcp.yml'),
     });
+  }
 }
