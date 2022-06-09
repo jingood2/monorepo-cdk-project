@@ -4,17 +4,7 @@ import * as servicecatalog from "aws-cdk-lib/aws-servicecatalog";
 import * as cfn_inc from 'aws-cdk-lib/cloudformation-include';
 import { Construct } from "constructs/lib/construct";
 
-export interface CustomProps extends cdk.StackProps {
-  project: string;
-  stage: string;
-}
-
 export interface VpcStackProps extends cdk.StackProps {
-  vpcCidr: string;
-  envStr: string;
-  pub_mask: number;
-  pri_mask: number;
-  db_mask: number;
 }
 
 export class VPCProduct extends servicecatalog.ProductStack {
