@@ -25,7 +25,7 @@ export class MyStack extends Stack {
       productVersions: [
         {
           productVersionName: "v1",
-          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCProduct(this, "VpcProduct", { vpcCidr: "10.0.0.0/18" })),
+          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCProduct(this, "VpcProduct", { vpcCidr: "10.1.0.0/18" })),
         },
       ],
     });
