@@ -40,8 +40,8 @@ export class MyStack extends Stack {
         }
       }
 
-      const product = new servicecatalog.CloudFormationProduct(this, 'Product', {
-        productName: "My Product",
+      new servicecatalog.CloudFormationProduct(this, 'Product', {
+        productName: "eks product",
         owner: "Product Owner",
         productVersions: [
           {
