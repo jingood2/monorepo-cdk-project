@@ -11,7 +11,7 @@ on:
 env:
   CI: "true"
   TESTING_STACK_NAME: "infra-cdk-s3-dev"
-  GITHUB_ASSUME_ROLE: arn:aws:iam::037729278610:role/github-deploy-v2-role
+  GITHUB_ASSUME_ROLE: arn:aws:iam::037729278610:role/github-monorepo-cdk-role
   TESTING_REGION: ap-northeast-2
   PROD_STACK_NAME: "infra-cdk-s3-prod"
   PROD_REGION: ap-northeast-2
