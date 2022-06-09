@@ -33,26 +33,27 @@ export class VPCProduct extends servicecatalog.ProductStack {
       type: "Number",
       default: 28,
       description: "Public Subnet CIDR Block Mask for VPC. Must be /26 or larger CIDR block.",
-      allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
+      //allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
     });
 
     const PRI_CIDR_MASK = new cdk.CfnParameter(this, "PriCidrMask", {
       type: "Number",
       default: 24,
       description: "Private Subnet CIDR Block Mask for VPC. Must be /21 or larger CIDR block.",
-      allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
+      //allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
     });
 
     const DB_CIDR_MASK = new cdk.CfnParameter(this, "DBCidrMask", {
       type: "Number",
       default: 28,
       description: "DB Subnet CIDR Block Mask for VPC. Must be /28 or larger CIDR block.",
-      allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
+      //allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
     });
 
     // 1. VPC
     this.vpc = new ec2.Vpc(this, "VPC", {
       vpcName: `${ENV.valueAsString}-vpc`,
+      cidr: "10.0.0.0/18",
       natGatewayProvider:
         ENV.valueAsString !== "prod"
           ? ec2.NatProvider.instance({
@@ -64,9 +65,9 @@ export class VPCProduct extends servicecatalog.ProductStack {
       natGateways: ENV.valueAsString !== "prod" ? 1 : 2,
       maxAzs: 2,
       subnetConfiguration: [
-        { name: "pub", subnetType: ec2.SubnetType.PUBLIC, cidrMask: PUB_CIDR_MASK.valueAsNumber },
-        { name: "pri", subnetType: ec2.SubnetType.PRIVATE_WITH_NAT, cidrMask: PRI_CIDR_MASK.valueAsNumber },
-        { name: "db", subnetType: ec2.SubnetType.PRIVATE_ISOLATED, cidrMask: DB_CIDR_MASK.valueAsNumber },
+        { name: "pub", subnetType: ec2.SubnetType.PUBLIC, cidrMask: cdk.Lazy.number({ produce: () => PUB_CIDR_MASK.valueAsNumber }) },
+        { name: "pri", subnetType: ec2.SubnetType.PRIVATE_WITH_NAT, cidrMask: cdk.Lazy.number({ produce: () => PRI_CIDR_MASK.valueAsNumber }) },
+        { name: "db", subnetType: ec2.SubnetType.PRIVATE_ISOLATED, cidrMask: cdk.Lazy.number({ produce: () => DB_CIDR_MASK.valueAsNumber }) },
       ],
     });
 
