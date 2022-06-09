@@ -12,6 +12,10 @@ export interface CustomProps extends cdk.StackProps {
 
 export interface VpcStackProps extends cdk.StackProps {
   vpcCidr: string;
+  envStr: string;
+  pub_mask: number;
+  pri_mask: number;
+  db_mask: number;
 }
 
 export class VPCProduct extends servicecatalog.ProductStack {
@@ -21,48 +25,19 @@ export class VPCProduct extends servicecatalog.ProductStack {
 
     console.log(props);
 
-    
-    const ENV = new cdk.CfnParameter(this, "Environment", {
-      description: "Environment",
-      type: "String",
-      default: "dev",
-      allowedValues: ["appliance", "dev", "shared", "prod"],
-    });
-
-    const PUB_CIDR_MASK = new cdk.CfnParameter(this, "PubCidrMask", {
-      type: "Number",
-      default: 28,
-      description: "Public Subnet CIDR Block Mask for VPC. Must be /26 or larger CIDR block.",
-      //allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
-    });
-
-    const PRI_CIDR_MASK = new cdk.CfnParameter(this, "PriCidrMask", {
-      type: "Number",
-      default: 24,
-      description: "Private Subnet CIDR Block Mask for VPC. Must be /21 or larger CIDR block.",
-      //allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
-    });
-
-    const DB_CIDR_MASK = new cdk.CfnParameter(this, "DBCidrMask", {
-      type: "Number",
-      default: 28,
-      description: "DB Subnet CIDR Block Mask for VPC. Must be /28 or larger CIDR block.",
-      //allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
-    });
-
     // 1. VPC
     this.vpc = new ec2.Vpc(this, "VPC", {
-      vpcName: `${ENV.valueAsString}-vpc`,
+      vpcName: `${props.envStr}-vpc`,
       cidr: "10.0.0.0/18",
       natGatewayProvider:
-        ENV.valueAsString !== "prod"
+        props.envStr !== "prod"
           ? ec2.NatProvider.instance({
               instanceType: new ec2.InstanceType("t2.micro"),
             })
           : undefined,
       enableDnsHostnames: true,
       enableDnsSupport: true,
-      natGateways: ENV.valueAsString !== "prod" ? 1 : 2,
+      natGateways: props.envStr !== "prod" ? 1 : 2,
       maxAzs: 2,
       subnetConfiguration: [
         { name: "pub", subnetType: ec2.SubnetType.PUBLIC, cidrMask: 28 },
@@ -72,8 +47,8 @@ export class VPCProduct extends servicecatalog.ProductStack {
     });
 
     new ssm.StringParameter(this, "ParamVpcId", {
-      description: `${ENV.valueAsString} VpcId`,
-      parameterName: `/${ENV.valueAsString}/vpc/id`,
+      description: `${props.envStr} VpcId`,
+      parameterName: `/${props.envStr}/vpc/id`,
       stringValue: this.vpc.vpcId,
       tier: ssm.ParameterTier.STANDARD,
     });
@@ -94,9 +69,9 @@ export class VPCProduct extends servicecatalog.ProductStack {
 
     // INFO: VPC Subnet Naming
     const subnetConfigs = [
-      { name: "pub", subnetType: ec2.SubnetType.PUBLIC, cidrMask: PUB_CIDR_MASK.valueAsNumber },
-      { name: "pri", subnetType: ec2.SubnetType.PRIVATE_WITH_NAT, cidrMask: PRI_CIDR_MASK.valueAsNumber },
-      { name: "db", subnetType: ec2.SubnetType.PRIVATE_ISOLATED, cidrMask: DB_CIDR_MASK.valueAsNumber },
+      { name: "pub", subnetType: ec2.SubnetType.PUBLIC, cidrMask: props.pub_mask },
+      { name: "pri", subnetType: ec2.SubnetType.PRIVATE_WITH_NAT, cidrMask: props.pri_mask},
+      { name: "db", subnetType: ec2.SubnetType.PRIVATE_ISOLATED, cidrMask: props.db_mask },
     ];
 
     subnetConfigs.forEach((subnetConfig) => {
@@ -105,7 +80,7 @@ export class VPCProduct extends servicecatalog.ProductStack {
       });
 
       selectedSubnets.subnets.forEach((value, index) => {
-        cdk.Tags.of(value).add("Name", `${ENV.valueAsString}-${subnetConfig.name}-${String(index + 1).padStart(2, "0")}`);
+        cdk.Tags.of(value).add("Name", `${props.envStr}-${subnetConfig.name}-${String(index + 1).padStart(2, "0")}`);
       });
     });
   }
