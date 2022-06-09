@@ -1,4 +1,5 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
+import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as servicecatalog from 'aws-cdk-lib/aws-servicecatalog';
 import { VPCProduct } from './lib/vpc-product';
@@ -8,6 +9,15 @@ export class MyStack extends Stack {
     super(scope, id, props);
 
     // define resources here...
+    
+    const VPC_CIDR = new cdk.CfnParameter(this, "VpcCidrBlock", {
+      type: "String",
+      default: "10.0.0.0/18",
+      description: "CIDR Block for VPC. Must be /26 or larger CIDR block.",
+      allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
+    });
+
+
     // Create a product from a stack
     new servicecatalog.CloudFormationProduct(this, "VpcProduct", {
       productName: "vpc product",
@@ -15,7 +25,7 @@ export class MyStack extends Stack {
       productVersions: [
         {
           productVersionName: "v1",
-          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCProduct(this, "VpcProduct")),
+          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCProduct(this, "VpcProduct", { vpcCidr: VPC_CIDR.valueAsString})),
         },
       ],
     });

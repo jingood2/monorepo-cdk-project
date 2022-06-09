@@ -10,28 +10,21 @@ export interface CustomProps extends cdk.StackProps {
   stage: string;
 }
 
-export interface VpcStackProps extends cdk.StackProps {
-  customProps: CustomProps;
-  vpcProps: ec2.VpcProps;
+export interface VpcStackProps {
+  vpcCidr: string;
 }
 
 export class VPCProduct extends servicecatalog.ProductStack {
   public readonly vpc: ec2.Vpc;
-  constructor(scope: Construct, id: string) {
+  constructor(scope: Construct, id: string, props: VpcStackProps) {
     super(scope, id);
 
+    
     const ENV = new cdk.CfnParameter(this, "Environment", {
       description: "Environment",
       type: "String",
       default: "dev",
       allowedValues: ["appliance", "dev", "shared", "prod"],
-    });
-
-    const VPC_CIDR = new cdk.CfnParameter(this, "VpcCidrBlock", {
-      type: "String",
-      default: "10.0.0.0/18",
-      description: "CIDR Block for VPC. Must be /26 or larger CIDR block.",
-      allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
     });
 
     const PUB_CIDR_MASK = new cdk.CfnParameter(this, "PubCidrMask", {
@@ -58,7 +51,7 @@ export class VPCProduct extends servicecatalog.ProductStack {
     // 1. VPC
     this.vpc = new ec2.Vpc(this, "VPC", {
       vpcName: `${ENV.valueAsString}-vpc`,
-      cidr: cdk.Lazy.string({ produce: () => VPC_CIDR.valueAsString }) ?? "10.0.0.0/18",
+      cidr: cdk.Lazy.string({ produce: () => props.vpcCidr }) ?? "10.0.0.0/18",
       natGatewayProvider:
         ENV.valueAsString !== "prod"
           ? ec2.NatProvider.instance({
