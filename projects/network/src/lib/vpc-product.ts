@@ -58,7 +58,7 @@ export class VPCProduct extends servicecatalog.ProductStack {
     // 1. VPC
     this.vpc = new ec2.Vpc(this, "VPC", {
       vpcName: `${ENV.valueAsString}-vpc`,
-      cidr: VPC_CIDR.valueAsString ?? "10.0.0.0/18",
+      cidr: cdk.Lazy.string({ produce: () => VPC_CIDR.valueAsString }) ?? "10.0.0.0/18",
       natGatewayProvider:
         ENV.valueAsString !== "prod"
           ? ec2.NatProvider.instance({
