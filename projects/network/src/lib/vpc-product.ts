@@ -10,7 +10,7 @@ export interface CustomProps extends cdk.StackProps {
   stage: string;
 }
 
-export interface VpcStackProps {
+export interface VpcStackProps extends cdk.StackProps {
   vpcCidr: string;
 }
 
