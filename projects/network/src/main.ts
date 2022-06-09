@@ -10,7 +10,7 @@ export class MyStack extends Stack {
 
     // define resources here...
     
-    const VPC_CIDR = new cdk.CfnParameter(this, "VpcCidrBlock", {
+    new cdk.CfnParameter(this, "VpcCidrBlock", {
       type: "String",
       default: "10.0.0.0/18",
       description: "CIDR Block for VPC. Must be /26 or larger CIDR block.",
