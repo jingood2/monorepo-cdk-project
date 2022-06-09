@@ -65,9 +65,9 @@ export class VPCProduct extends servicecatalog.ProductStack {
       natGateways: ENV.valueAsString !== "prod" ? 1 : 2,
       maxAzs: 2,
       subnetConfiguration: [
-        { name: "pub", subnetType: ec2.SubnetType.PUBLIC, cidrMask: cdk.Lazy.number({ produce: () => PUB_CIDR_MASK.valueAsNumber }) },
-        { name: "pri", subnetType: ec2.SubnetType.PRIVATE_WITH_NAT, cidrMask: cdk.Lazy.number({ produce: () => PRI_CIDR_MASK.valueAsNumber }) },
-        { name: "db", subnetType: ec2.SubnetType.PRIVATE_ISOLATED, cidrMask: cdk.Lazy.number({ produce: () => DB_CIDR_MASK.valueAsNumber }) },
+        { name: "pub", subnetType: ec2.SubnetType.PUBLIC, cidrMask: 28 },
+        { name: "pri", subnetType: ec2.SubnetType.PRIVATE_WITH_NAT, cidrMask: 24 },
+        { name: "db", subnetType: ec2.SubnetType.PRIVATE_ISOLATED, cidrMask: 28 },
       ],
     });
 
