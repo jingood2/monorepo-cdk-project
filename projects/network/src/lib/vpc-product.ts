@@ -19,6 +19,8 @@ export class VPCProduct extends servicecatalog.ProductStack {
   constructor(scope: Construct, id: string, props: VpcStackProps) {
     super(scope, id);
 
+    console.log(props);
+
     
     const ENV = new cdk.CfnParameter(this, "Environment", {
       description: "Environment",
