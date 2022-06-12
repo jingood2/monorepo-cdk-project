@@ -30,7 +30,7 @@ export class VpcV2Product extends ProductStack {
 
     // define resources here...
     const vpc = new ec2.CfnVPC(this, "VPC", {
-      cidrBlock: cidrBlock.valueAsString,
+      cidrBlock: "10.0.0.0/16",
     });
 
     vpc.applyRemovalPolicy(RemovalPolicy.RETAIN);
