@@ -17,11 +17,11 @@ export class MyStack extends Stack {
       owner: "Product Owner",
       productVersions: [
         {
-          productVersionName: "v1",
+          productVersionName: "v1.0",
           cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCProduct(this, "Vpc", {})),
         },
         {
-          productVersionName: "v2",
+          productVersionName: "v2.0",
           cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VpcV2Product(this, "VpcV2", {})),
         },
       ],
