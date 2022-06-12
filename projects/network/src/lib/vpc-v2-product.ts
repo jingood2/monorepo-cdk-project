@@ -14,7 +14,7 @@ export class VpcV2Product extends ProductStack {
 
     console.log(props);
 
-    const cidrBlock = new CfnParameter(this, "cidrBlock", {
+    new CfnParameter(this, "cidrBlock", {
       type: "String",
       default: "192.168.1.0/25",
       description: "CIDR Block for VPC. Must be /26 or larger CIDR block.",
