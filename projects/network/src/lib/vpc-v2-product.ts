@@ -1,4 +1,4 @@
-import { Aws, CfnMapping, CfnParameter, Fn, RemovalPolicy, StackProps } from "aws-cdk-lib";
+import { Aws, CfnMapping, Fn, RemovalPolicy, StackProps } from "aws-cdk-lib";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { ProductStack } from "aws-cdk-lib/aws-servicecatalog";
 //import * as iam from 'aws-cdk-lib/aws-iam';
