@@ -2,6 +2,7 @@ import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as servicecatalog from 'aws-cdk-lib/aws-servicecatalog';
 import { VPCProduct } from './lib/vpc-product';
+import { VPCV3Product } from './lib/vpc-v3-product';
 //import { VpcV2Product } from './lib/vpc-v2-product';
 
 export class MyStack extends Stack {
@@ -18,7 +19,7 @@ export class MyStack extends Stack {
       productVersions: [
         {
           productVersionName: "v1.0",
-          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCProduct(this, "Vpc", {template: './vpc-3tier-zcp.yml'})),
+          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCProduct(this, "Vpc", {})),
         },
         /*
         {
@@ -28,7 +29,7 @@ export class MyStack extends Stack {
         */
         {
           productVersionName: "v3.0",
-          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCProduct(this, "VpcV2", {template: './vpc-dev.template.json'})),
+          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCV3Product(this, "VpcV3", {})),
         },
 
       ],

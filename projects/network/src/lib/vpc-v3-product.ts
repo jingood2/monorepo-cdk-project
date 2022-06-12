@@ -7,14 +7,14 @@ import { Construct } from "constructs/lib/construct";
 export interface VpcStackProps extends cdk.StackProps {
 }
 
-export class VPCProduct extends servicecatalog.ProductStack {
+export class VPCV3Product extends servicecatalog.ProductStack {
   constructor(scope: Construct, id: string, props: VpcStackProps) {
     super(scope, id);
 
     console.log(props);
 
     new cfn_inc.CfnInclude(this, 'vpc-3tier-with-zcp-product-template', {
-      templateFile: path.join(__dirname, './vpc-3tier-zcp.yml'),
+      templateFile: path.join(__dirname, './vpc-dev.template.json'),
     });
   }
 }
