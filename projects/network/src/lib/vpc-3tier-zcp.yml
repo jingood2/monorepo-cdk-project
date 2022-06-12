@@ -79,7 +79,6 @@
       "ConstraintDescription": "CIDR network mask parameter must be in the form x.x.x.x/16-28",
       "Description": "CIDR block for the DB Subnet"
     },
-    }
   },
   "Conditions": {
     "UseZCP": {
@@ -1364,5 +1363,5 @@
         "Name": "VPCWithECSCLuster:ExportsOutputRefVPCWithZCPZcpPodSubnet2Subnet440CF3DF05481A43"
       }
     }
-  },
+  }
 }
