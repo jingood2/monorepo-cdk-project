@@ -13,13 +13,13 @@ export class MyStack extends Stack {
 
 
     // Create a product from a stack
-    new servicecatalog.CloudFormationProduct(this, 'VpcProduct', {
-      productName: 'vpc product',
-      owner: 'jingood2',
+    new servicecatalog.CloudFormationProduct(this, "VpcProduct", {
+      productName: "VPC Product",
+      owner: "SK Cloud Transformation Group",
       productVersions: [
         {
-          productVersionName: 'v1.0',
-          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCProduct(this, 'Vpc', {})),
+          productVersionName: "v1.0",
+          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCProduct(this, "Vpc", {})),
         },
         /*
         {
