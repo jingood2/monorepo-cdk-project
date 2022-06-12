@@ -14,7 +14,7 @@ export class MyStack extends Stack {
     // Create a product from a stack
     new servicecatalog.CloudFormationProduct(this, "VpcProduct", {
       productName: "vpc product",
-      owner: "Product Owner",
+      owner: "jingood2",
       productVersions: [
         {
           productVersionName: "v1.0",
