@@ -22,7 +22,7 @@ export class MyStack extends Stack {
         },
         {
           productVersionName: "v2",
-          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VpcV2Product(this, "Vpc", {})),
+          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VpcV2Product(this, "VpcV2", {})),
         },
       ],
     });
