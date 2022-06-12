@@ -37,7 +37,7 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, 'vpc-dev', { env: devEnv });
+new MyStack(app, 'vpc-test', { env: devEnv });
 // new MyStack(app, 'vpc-prod', { env: prodEnv });
 
 app.synth();
