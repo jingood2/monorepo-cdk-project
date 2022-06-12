@@ -1323,14 +1323,6 @@
         "Name": "VPCWithECSCLuster:ExportsOutputRefVPCWithZCP1F8B29D1FF2D6F84"
       }
     },
-    "ExportsOutputRefClusterEB0386A796A0E3FE": {
-      "Value": {
-        "Ref": "ClusterEB0386A7"
-      },
-      "Export": {
-        "Name": "VPCWithECSCLuster:ExportsOutputRefClusterEB0386A796A0E3FE"
-      }
-    },
     "ExportsOutputRefVPCWithZCPPrivateSubnet1Subnet7DFDAE8E7AAE99D4": {
       "Value": {
         "Ref": "VPCWithZCPPrivateSubnet1Subnet7DFDAE8E"
