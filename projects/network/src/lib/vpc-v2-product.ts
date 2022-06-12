@@ -36,7 +36,7 @@ export class VpcV2Product extends ProductStack {
     vpc.applyRemovalPolicy(RemovalPolicy.RETAIN);
     vpc.tags.setTag("Name", `${Aws.STACK_NAME}-VPC`);
 
-    const cidrCount = 6;
+    const cidrCount = 4;
     const cidrBits = "4";
     const availabilityZoneA = {
       "Fn::Select": [
@@ -140,7 +140,7 @@ export class VpcV2Product extends ProductStack {
     // Create Firewall Subnet 1
     const privateSubnet1 = new ec2.CfnSubnet(this, "PrivateSubnet1", {
       vpcId: vpc.ref,
-      cidrBlock: Fn.select(0, Fn.cidr(vpc.attrCidrBlock, cidrCount, cidrBits)),
+      cidrBlock: Fn.select(2, Fn.cidr(vpc.attrCidrBlock, cidrCount, cidrBits)),
     });
 
     privateSubnet1.tags.setTag("Name", `${Aws.STACK_NAME}-PrivateSubnet1`);
@@ -169,7 +169,7 @@ export class VpcV2Product extends ProductStack {
     // Create Firewall Subnet 2
     const privateSubnet2 = new ec2.CfnSubnet(this, "PrivateSubnet2", {
       vpcId: vpc.ref,
-      cidrBlock: Fn.select(1, Fn.cidr(vpc.attrCidrBlock, cidrCount, cidrBits)),
+      cidrBlock: Fn.select(3, Fn.cidr(vpc.attrCidrBlock, cidrCount, cidrBits)),
     });
 
     privateSubnet2.tags.setTag("Name", `${Aws.STACK_NAME}-PrivateSubnet2`);
