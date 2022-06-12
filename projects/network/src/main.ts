@@ -1,7 +1,7 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as servicecatalog from 'aws-cdk-lib/aws-servicecatalog';
-import { VPCProduct } from './lib/vpc-product';
+//import { VPCProduct } from './lib/vpc-product';
 import { VpcV2Product } from './lib/vpc-v2-product';
 
 export class MyStack extends Stack {
