@@ -17,14 +17,6 @@
         },
         {
           "Label": {
-            "default": "(Optional)ECS Cluster in VPC"
-          },
-          "Parameters": [
-            "ECSCluster"
-          ]
-        },
-        {
-          "Label": {
             "default": "(Optional) Create Pod Subnet for ZCP"
           },
           "Parameters": [
@@ -87,19 +79,6 @@
       "ConstraintDescription": "CIDR network mask parameter must be in the form x.x.x.x/16-28",
       "Description": "CIDR block for the DB Subnet"
     },
-    "ECSCluster": {
-      "Type": "String",
-      "Default": "false",
-      "AllowedValues": [
-        "true",
-        "false"
-      ],
-      "Description": "Create ECS Cluster in VPC"
-    },
-    "BootstrapVersion": {
-      "Type": "AWS::SSM::Parameter::Value<String>",
-      "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
     }
   },
   "Conditions": {
@@ -118,15 +97,7 @@
           "Ref": "useZCP"
         }
       ]
-    },
-    "EnableCreateECSCluster": {
-      "Fn::Equals": [
-        "true",
-        {
-          "Ref": "ECSCluster"
-        }
-      ]
-    },
+    }
   },
   "Resources": {
     "Vpc8378EB38": {
@@ -1326,26 +1297,6 @@
       "Metadata": {
         "aws:cdk:path": "VPCWithECSCLuster/VPCWithZCP/VPCGW"
       }
-    },
-    "ClusterEB0386A7": {
-      "Type": "AWS::ECS::Cluster",
-      "Properties": {
-        "ClusterName": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "Environment"
-              },
-              "-cluster"
-            ]
-          ]
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "VPCWithECSCLuster/Cluster/Resource"
-      },
-      "Condition": "EnableCreateECSCluster"
     }
   },
   "Outputs": {
@@ -1414,31 +1365,4 @@
       }
     }
   },
-  "Rules": {
-    "CheckBootstrapVersion": {
-      "Assertions": [
-        {
-          "Assert": {
-            "Fn::Not": [
-              {
-                "Fn::Contains": [
-                  [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
-                  ],
-                  {
-                    "Ref": "BootstrapVersion"
-                  }
-                ]
-              }
-            ]
-          },
-          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
-        }
-      ]
-    }
-  }
 }
