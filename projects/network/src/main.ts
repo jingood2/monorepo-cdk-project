@@ -1,8 +1,8 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as servicecatalog from 'aws-cdk-lib/aws-servicecatalog';
-//import { VPCProduct } from './lib/vpc-product';
-import { VpcV2Product } from './lib/vpc-v2-product';
+import { VPCProduct } from './lib/vpc-product';
+//import { VpcV2Product } from './lib/vpc-v2-product';
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
@@ -16,14 +16,16 @@ export class MyStack extends Stack {
       productName: "vpc product",
       owner: "jingood2",
       productVersions: [
-      /*   {
+        {
           productVersionName: "v1.0",
           cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VPCProduct(this, "Vpc", {})),
-        }, */
+        },
+        /*
         {
           productVersionName: "v2.0",
           cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new VpcV2Product(this, "VpcV2", {})),
         },
+        */
       ],
     });
   }
