@@ -14,12 +14,12 @@ export class VpcV2Product extends ProductStack {
 
     console.log(props);
 
-    new CfnParameter(this, "cidrBlock", {
+    /* new CfnParameter(this, "cidrBlock", {
       type: "String",
       default: "192.168.1.0/25",
       description: "CIDR Block for VPC. Must be /26 or larger CIDR block.",
       allowedPattern: "^(?:[0-9]{1,3}.){3}[0-9]{1,3}[/]([0-9]?[0-6]?|[1][7-9])$",
-    });
+    }); */
 
     /**
      * Mappings - define fixed values
