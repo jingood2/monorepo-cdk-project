@@ -328,7 +328,13 @@ Resources:
       Tags:
       - Key: Name
         Value: !Sub '${pSystem}-${pVpcName}'
-
+  VpcCidrBlock:
+    Type: AWS::EC2::VPCCidrBlock
+    Properties:
+      VpcId: !Ref rVpc
+      CidrBlock: !Ref pSecondaryCidr
+ 
+ 
 #------------------------------------------------------------------------------
 # Enable VPC FlowLogs
 #------------------------------------------------------------------------------
