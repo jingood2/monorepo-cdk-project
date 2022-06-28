@@ -1,60 +1,22 @@
-name: "eks"
+name: eks
 
 on:
   push:
     branches:
-      - main
-      #- develop
+      - 'develop'
     paths:
       - "projects/eks/**"
-      - ".github/workflows/eks.yaml"
-env:
-  CI: "true"
-  TESTING_STACK_NAME: "infra-eks-dev"
-  GITHUB_ASSUME_ROLE: arn:aws:iam::037729278610:role/github-monorepo-cdk-role
-  TESTING_REGION: ap-northeast-2
-  PROD_STACK_NAME: "infra-eks-prod"
-  PROD_REGION: ap-northeast-2
-
+      - "./github/workflows/eks.yaml"
 
 jobs:
-  cdk_build:
-    runs-on: ubuntu-latest
-     # These permissions are needed to interact with GitHub's OIDC Token endpoint
+  eks-037729278610:
+    # reusable workflows MUST be in .github/workflows
+    uses: ./.github/workflows/reusable-cdk-cicd-workflow.yaml
     permissions:
       id-token: write
       contents: read
-    env:
-      CI: "true"
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
-        with:
-          working-directory: projects/eks
-
-      - name: assume role
-        uses: aws-actions/configure-aws-credentials@master
-        with:
-          role-to-assume: ${{ env.GITHUB_ASSUME_ROLE }}
-          role-session-name: github-session
-          aws-region: ap-northeast-2
-
-      - name: cdk diff
-        run: npm run diff
-        working-directory: projects/eks
-
-      - name: cdk build 
-        run: npm run synth
-        working-directory: projects/eks
-          
-      - name: cdk deploy
-        run: yarn cdk deploy --all --require-approval never 
-        working-directory: projects/eks
+    with:
+      # 0으로 시작하는 AccountID 때문에 문자열로 명시
+      aws_account_id: 037729278610
+      stage: "prod"
+      app_name: eks

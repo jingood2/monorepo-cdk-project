@@ -1,39 +1,47 @@
-import { GithubActionsIdentityProvider, GithubActionsRole } from 'aws-cdk-github-oidc';
-import { App, Duration, Stack, StackProps } from 'aws-cdk-lib';
+
+import { App, CfnParameter, Duration, Stack, StackProps } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as servicecatalog from 'aws-cdk-lib/aws-servicecatalog';
 import { Construct } from 'constructs';
+import { GithubOidcProviderConstruct } from './github-oidc-provider-construct';
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    /**
-     * Create an Identity provider for GitHub inside your AWS Account. This
-     * allows GitHub to present itself to AWS IAM and assume a role.
-     */
-    const provider = new GithubActionsIdentityProvider(this, 'GithubProvider');
+     const owner = new CfnParameter(this, "GithubOwner", {
+       type: "String",
+       description: "GitHub Owner",
+       default: "jingood2",
+     });
 
-    const deployRole = new GithubActionsRole(this, 'GithubDeployRole', {
-      provider: provider, // reference into the OIDC provider
-      owner: 'jingood2', // your repository owner (organization or user) name
-      repo: 'monorepo-cdk-project', // your repository name (without the owner name)
-      roleName: 'github-monorepo-cdk-role',
-      description: 'This role deploys stuff to AWS v2',
-      maxSessionDuration: Duration.hours(2),
+     const repo = new CfnParameter(this, "GithubRepo", {
+       type: "String",
+       description: "GitHub Repository",
+       default: "monorepo-cdk-project",
+     });
+   
+     const role = new CfnParameter(this, "GithubRole", {
+       type: "String",
+       description: "GitHub Role",
+       default: "jingood2",
+     });
+
+    new servicecatalog.CloudFormationProduct(this, "VpcProduct", {
+      productName: "VPC Product",
+      owner: "SK Cloud Transformation Group",
+      productVersions: [
+        {
+          productVersionName: "v1.0",
+          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new GithubOidcProviderConstruct(this, "GithubOIDCProvider", {
+            owner: owner.valueAsString,
+            repo: repo.valueAsString,
+            role: role.valueAsString,
+          })),
+        },
+      ],
     });
-
-    deployRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
-
-    const deploy2Role = new GithubActionsRole(this, 'GithubDeploy2Role', {
-      provider: provider, // reference into the OIDC provider
-      owner: 'jingood2', // your repository owner (organization or user) name
-      repo: 'monorepo-actions-ci', // your repository name (without the owner name)
-      roleName: 'github-monorepo-actions-ci-role',
-      description: 'This role deploys stuff to AWS v2',
-      maxSessionDuration: Duration.hours(2),
-    });
-
-    deploy2Role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
+ 
   }
 }
 

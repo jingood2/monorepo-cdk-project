@@ -1,0 +1,11 @@
+name: {{PROJECT}}
+
+on:
+  push:
+    branches:
+      - 'develop'
+    paths:
+      - "projects/{{PROJECT}}/**"
+      - "./github/workflows/{{PROJECT}}.yaml"
+
+jobs:
