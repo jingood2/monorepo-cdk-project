@@ -23,7 +23,7 @@ on:
         default: .
       pipeline_execution_role:
         type: string
-        required: false
+        required: true
         default: github-deploy-role
 
 env:
@@ -31,7 +31,6 @@ env:
 
 jobs:
   cdk-build-deploy:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
      # These permissions are needed to interact with GitHub's OIDC Token endpoint
     permissions:
@@ -56,8 +55,8 @@ jobs:
       - name: assume role
         uses: aws-actions/configure-aws-credentials@master
         with:
-          #role-to-assume:  arn:aws:iam::${{inputs.aws_account_id}}:role/${{inputs.pipeline_execution_role}}
-          role-to-assume:  arn:aws:iam::037729278610:role/github-deploy-role
+          role-to-assume:  arn:aws:iam::${{inputs.aws_account_id}}:role/${{inputs.pipeline_execution_role}}
+          #role-to-assume:  arn:aws:iam::037729278610:role/github-deploy-role
           role-session-name: github-session
           aws-region: ap-northeast-2
 
@@ -76,31 +75,6 @@ jobs:
           
       - name: cdk deploy
         run: yarn cdk deploy --all --require-approval never 
-        env:
-          CDK_DEFAULT_ACCOUNT: ${{inputs.aws_account_id}}
-          CDK_DEFAULT_REGION: ${{inputs.aws_region}}
-          STAGE: ${{inputs.stage}}
-          PROJECT_NAME: ${{inputs.app_name}}
-        working-directory: projects/${{inputs.app_name}}
-
-  delete-feature:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-
-      - name: Assume the testing pipeline user role
-        uses: aws-actions/configure-aws-credentials@master
-        with:
-          aws-region: ${{ inputs.aws_region }}
-          role-to-assume: arn:aws:iam::${{inputs.aws_account_id}}:role/${{inputs.pipeline_execution_role}}
-          role-session-name: testing-packaging
-          role-duration-seconds: 3600
-          role-skip-session-tagging: true
-
-      - name: cdk deploy
-        run: yarn cdk destroy 
         env:
           CDK_DEFAULT_ACCOUNT: ${{inputs.aws_account_id}}
           CDK_DEFAULT_REGION: ${{inputs.aws_region}}

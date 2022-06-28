@@ -1,4 +1,4 @@
-  {{PROJECT}}-{{TARGET_ACCOUNT}}:
+  {{PROJECT}}:
     # reusable workflows MUST be in .github/workflows
     uses: ./.github/workflows/reusable-cdk-cicd-workflow.yaml
     permissions:

@@ -4,13 +4,12 @@ on:
   pull_request:
     branches:
       - main
-      - feat**
     types: [ closed ]
+  push:
+    branches:
+      - 'feat**'
     paths:
       - "projects/{{PROJECT}}/**"
       - "./github/workflows/{{PROJECT}}.yaml"
-  delete:
-    branches:
-      - 'feat**'
 
 jobs:
