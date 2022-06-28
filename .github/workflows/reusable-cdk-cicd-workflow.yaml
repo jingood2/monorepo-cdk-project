@@ -54,7 +54,7 @@ jobs:
           working-directory: projects/${{inputs.app_name}}
 
       - name: assume role
-        uses: aws-actions/configure-aws-credentials@master
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
           #role-to-assume:  arn:aws:iam::${{ inputs.aws_account_id }}:role/${{ inputs.pipeline_execution_role }}
