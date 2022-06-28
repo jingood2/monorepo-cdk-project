@@ -84,7 +84,7 @@ jobs:
         working-directory: projects/${{inputs.app_name}}
 
   delete-feature:
-    if: startsWith(github.ref, 'refs/heads/feat') && github.event_name == 'delete'
+    if: startsWith(github.ref, 'refs/heads/feat**') && github.event_name == 'delete'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
