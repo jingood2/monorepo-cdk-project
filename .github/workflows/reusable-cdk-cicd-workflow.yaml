@@ -28,7 +28,7 @@ on:
 
 env:
   CI: "true"
-  EXECUTION_ROLE: arn:aws:iam::${{ inputs.aws_account_id }}:role/${{ inputs.pipeline_execution_role }}
+  EXECUTION_ROLE: arn:aws:iam::`${{ inputs.aws_account_id }}`:role/${{ inputs.pipeline_execution_role }}
 
 jobs:
   cdk-build-deploy:
