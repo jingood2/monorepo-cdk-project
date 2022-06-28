@@ -1,26 +1,15 @@
 
-import { App, CfnParameter, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
-import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { App, Stack, StackProps } from 'aws-cdk-lib';
 import * as servicecatalog from 'aws-cdk-lib/aws-servicecatalog';
 import { Construct } from 'constructs';
-import { GithubOidcProviderConstruct } from './github-oidc-provider-construct';
-
-export class SimpleStack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps) {
-    super(scope, id, props);
-
-    new Bucket(this, "my-simple-bucket", {
-      autoDeleteObjects: true,
-      removalPolicy: RemovalPolicy.DESTROY,
-    });
-  }
-}
+import path from 'path';
+//import { GithubOidcProviderConstruct } from './github-oidc-provider-construct';
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-     const owner = new CfnParameter(this, "GithubOwner", {
+    /*  const owner = new CfnParameter(this, "GithubOwner", {
        type: "String",
        description: "GitHub Owner",
        default: "jingood2",
@@ -36,21 +25,25 @@ export class MyStack extends Stack {
        type: "String",
        description: "GitHub Role",
        default: "jingood2",
-     });
+     }); */
 
     new servicecatalog.CloudFormationProduct(this, "GithubOIDCProduct", {
       productName: "Github OIDC Provider Product2",
       owner: "SK Cloud Transformation Group",
       productVersions: [
-        {
+        /* {
           productVersionName: "v1.0",
           cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(
-            new GithubOidcProviderConstruct(new SimpleStack(this,'s3', {}), "GithubOIDCProvider", {
+            new GithubOidcProviderConstruct(this, "GithubOIDCProvider", {
               owner: owner.valueAsString,
               repo: repo.valueAsString,
               role: role.valueAsString,
             }),
           ),
+        }, */
+        {
+          productVersionName: "v1.0",
+          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromAsset(path.join(__dirname, "github-oidc-provider.template.json")),
         },
       ],
     });
