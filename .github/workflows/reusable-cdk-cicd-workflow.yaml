@@ -40,10 +40,6 @@ jobs:
     env:
       CI: "true"
     steps:
-      - run: |
-          echo ${{ env.EXECUTION_ROLE }}
-          echo ${{ inputs.aws_account_id }}
-
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
@@ -60,7 +56,7 @@ jobs:
       - name: assume role
         uses: aws-actions/configure-aws-credentials@master
         with:
-          role-to-assume: ${{ env.EXECUTION_ROLE }}
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
           #role-to-assume:  arn:aws:iam::${{ inputs.aws_account_id }}:role/${{ inputs.pipeline_execution_role }}
           #role-to-assume:  arn:aws:iam::037729278610:role/github-deploy-role
           role-session-name: github-session
