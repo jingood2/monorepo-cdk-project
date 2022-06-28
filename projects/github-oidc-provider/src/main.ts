@@ -1,6 +1,6 @@
 
 import { App, CfnParameter, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
-import { Bucket, IBucket } from 'aws-cdk-lib/aws-s3';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import * as servicecatalog from 'aws-cdk-lib/aws-servicecatalog';
 import { Construct } from 'constructs';
 import { GithubOidcProviderConstruct } from './github-oidc-provider-construct';
