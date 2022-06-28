@@ -27,8 +27,8 @@ export class MyStack extends Stack {
        default: "jingood2",
      });
 
-    new servicecatalog.CloudFormationProduct(this, "VpcProduct", {
-      productName: "VPC Product",
+    new servicecatalog.CloudFormationProduct(this, "GithubOIDCProduct", {
+      productName: "Github OIDC Provider Product",
       owner: "SK Cloud Transformation Group",
       productVersions: [
         {
@@ -53,6 +53,6 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, 'bootstrap-dev', { env: devEnv });
+new MyStack(app, 'github-oidc-provider', { env: devEnv });
 
 app.synth();
