@@ -13,7 +13,7 @@ for PROJECT in $(ls projects); do
     echo "${MAIN_WORKFLOW}" > .github/workflows/${PROJECT}.yaml
 
     for ACCOUNT in ${TARGET_DEPLOY_ACCOUNTS[@]}; do
-        JOB_WORKFLOW=$(echo "${JOB_WORKFLOW_TEMPLATE}" | sed "s/{{TARGET_ACCOUNT}}/${ACCOUNT}/g" | sed "s/{{PROJECT}}/${PROJECT}/g")
+        JOB_WORKFLOW=$(echo "${JOB_WORKFLOW_TEMPLATE}" | sed "s/{{TARGET_ACCOUNT}}/'${ACCOUNT}'/g" | sed "s/{{PROJECT}}/${PROJECT}/g")
         echo "${JOB_WORKFLOW}" >> .github/workflows/${PROJECT}.yaml
     done
 done
