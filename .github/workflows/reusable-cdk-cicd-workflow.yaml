@@ -54,11 +54,12 @@ jobs:
           working-directory: projects/${{inputs.app_name}}
 
       - name: assume role
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@master
         with:
           #role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
           #role-to-assume:  arn:aws:iam::${{ inputs.aws_account_id }}:role/${{ inputs.pipeline_execution_role }}
-          role-to-assume:  arn:aws:iam::037729278610:role/github-deploy-role
+          #role-to-assume:  arn:aws:iam::037729278610:role/github-deploy-role
+          role-to-assume:  ${{ inputs.pipeline_execution_role }}
           role-session-name: github-session
           aws-region: ap-northeast-2
 
