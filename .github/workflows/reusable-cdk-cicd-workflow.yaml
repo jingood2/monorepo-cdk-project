@@ -31,6 +31,7 @@ env:
 
 jobs:
   cdk-build-deploy:
+    if: github.event_name != 'delete'
     runs-on: ubuntu-latest
      # These permissions are needed to interact with GitHub's OIDC Token endpoint
     permissions:
@@ -83,7 +84,7 @@ jobs:
         working-directory: projects/${{inputs.app_name}}
 
   delete-feature:
-    if: startsWith(github.event.ref, 'feat') && github.event_name == 'delete'
+    if: startsWith(github.ref, 'refs/heads/feat') && github.event_name == 'delete'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
