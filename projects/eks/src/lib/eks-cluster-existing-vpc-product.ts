@@ -3,13 +3,9 @@ import * as servicecatalog from 'aws-cdk-lib/aws-servicecatalog';
 import * as cfn_inc from 'aws-cdk-lib/cloudformation-include';
 import { Construct } from 'constructs';
 
-export interface EksClusterProps {
-  templatename: string;
-}
-
 //export class EksClusterProduct extends servicecatalog.ProductStack {
-export class EksClusterProduct extends servicecatalog.ProductStack {
-  constructor(scope: Construct, id: string, props: EksClusterProps) {
+export class EksClusterExistingVPCProduct extends servicecatalog.ProductStack {
+  constructor(scope: Construct, id: string) {
     super(scope, id);
 
     //const vpcId = new cdk.CfnParameter(this, "VpcId", {
@@ -44,8 +40,8 @@ export class EksClusterProduct extends servicecatalog.ProductStack {
       vpcSubnets: [{ subnetType: ec2.SubnetType.PRIVATE_WITH_NAT }],
     }); */
 
-    new cfn_inc.CfnInclude(this, 'costm-eks-product', {
-      templateFile: path.join(__dirname, props.templatename ),
+    new cfn_inc.CfnInclude(this, 'eks-exsiting-vpc-product', {
+      templateFile: path.join(__dirname, 'eks-cluster-existing-vpc.yml'),
     });
   }
 }

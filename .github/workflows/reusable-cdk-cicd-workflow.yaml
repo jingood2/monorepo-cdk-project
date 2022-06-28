@@ -1,0 +1,82 @@
+name: Reusable CDK CICD Pipeline
+
+on:
+  workflow_call:
+    inputs:
+      aws_account_id:
+        required: true
+        type: string
+      aws_region:
+        type: string
+        required: false
+        default: ap-northeast-2
+      stage:
+        type: string
+        required: false
+        default: prod
+      app_name:
+        type: string
+        required: true
+      project_root_dir:
+        type: string
+        required: false
+        default: .
+      pipeline_execution_role:
+        type: string
+        required: false
+        default: github-deploy-role
+
+env:
+  CI: "true"
+
+jobs:
+  cdk-build-deploy:
+    runs-on: ubuntu-latest
+     # These permissions are needed to interact with GitHub's OIDC Token endpoint
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: projects/${{inputs.app_name}}
+
+      - name: assume role
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume:  arn:aws:iam::${{inputs.aws_account_id}}:role/${{inputs.pipeline_execution_role}}
+          role-session-name: github-session
+          aws-region: ap-northeast-2
+
+      - name: cdk diff
+        run: npm run diff
+        working-directory: projects/${{inputs.app_name}}
+
+      - name: cdk build 
+        run: npm run synth
+        env:
+          CDK_DEFAULT_ACCOUNT: ${{inputs.aws_account_id}}
+          CDK_DEFAULT_REGION: ${{inputs.aws_region}}
+          STAGE: ${{inputs.stage}}
+          PROJECT_NAME: ${{inputs.app_name}}
+        working-directory: projects/${{inputs.app_name}}
+          
+      - name: cdk deploy
+        run: yarn cdk deploy --all --require-approval never 
+        env:
+          CDK_DEFAULT_ACCOUNT: ${{inputs.aws_account_id}}
+          CDK_DEFAULT_REGION: ${{inputs.aws_region}}
+          STAGE: ${{inputs.stage}}
+          PROJECT_NAME: ${{inputs.app_name}}
+        working-directory: projects/${{inputs.app_name}}

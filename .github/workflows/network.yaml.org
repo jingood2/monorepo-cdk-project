@@ -1,24 +1,20 @@
-name: "github-oidc-provider"
+name: "network"
 
 on:
   push:
     branches:
       - main
-      #- develop
+      - develop
     paths:
-      - "projects/github-oidc-provider/**"
-      - ".github/workflows/github-oidc-provider.yaml"
+      - "projects/network/**"
+      - ".github/workflows/network.yaml"
 env:
   CI: "true"
-  TESTING_STACK_NAME: "infra-github-oidc-provider-dev"
+  TESTING_STACK_NAME: "infra-network-dev"
   GITHUB_ASSUME_ROLE: arn:aws:iam::037729278610:role/github-monorepo-cdk-role
   TESTING_REGION: ap-northeast-2
-  PROD_STACK_NAME: "infra-github-oidc-provider-prod"
+  PROD_STACK_NAME: "infra-network-prod"
   PROD_REGION: ap-northeast-2
-  CDK_DEFAULT_ACCOUNT:
-  CDK_DEFAULT_REGION:
-  STAGE:
-  PROJECT:
 
 
 jobs:
@@ -42,7 +38,7 @@ jobs:
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
         with:
-          working-directory: projects/github-oidc-provider
+          working-directory: projects/network
 
       - name: assume role
         uses: aws-actions/configure-aws-credentials@master
@@ -53,12 +49,12 @@ jobs:
 
       - name: cdk diff
         run: npm run diff
-        working-directory: projects/github-oidc-provider
+        working-directory: projects/network
 
       - name: cdk build 
         run: npm run synth
-        working-directory: projects/github-oidc-provider
+        working-directory: projects/network
           
       - name: cdk deploy
         run: yarn cdk deploy --all --require-approval never 
-        working-directory: projects/github-oidc-provider
+        working-directory: projects/network
