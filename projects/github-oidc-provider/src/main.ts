@@ -1,30 +1,57 @@
-import { GithubActionsIdentityProvider, GithubActionsRole } from "aws-cdk-github-oidc";
-import { App, Duration, Stack, StackProps } from "aws-cdk-lib";
-import * as iam from "aws-cdk-lib/aws-iam";
-import { Construct } from "constructs";
+
+import { App, Stack, StackProps } from 'aws-cdk-lib';
+import * as servicecatalog from 'aws-cdk-lib/aws-servicecatalog';
+import { Construct } from 'constructs';
+import path from 'path';
+//import { GithubOidcProviderConstruct } from './github-oidc-provider-construct';
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    /**
-     * Create an Identity provider for GitHub inside your AWS Account. This
-     * allows GitHub to present itself to AWS IAM and assume a role.
-     */
-    const provider = new GithubActionsIdentityProvider(this, "GithubProvider");
+    /*  const owner = new CfnParameter(this, "GithubOwner", {
+       type: "String",
+       description: "GitHub Owner",
+       default: "jingood2",
+     });
 
-    const deployRole = new GithubActionsRole(this, "GithubDeployRole", {
-      provider: provider, // reference into the OIDC provider
-      owner: "jingood2", // your repository owner (organization or user) name
-      repo: "github-monorepo-ci", // your repository name (without the owner name)
-      roleName: "github-deploy-v2-role",
-      description: "This role deploys stuff to AWS v2",
-      maxSessionDuration: Duration.hours(2),
+     const repo = new CfnParameter(this, "GithubRepo", {
+       type: "String",
+       description: "GitHub Repository",
+       default: "monorepo-cdk-project",
+     });
+   
+     const role = new CfnParameter(this, "GithubRole", {
+       type: "String",
+       description: "GitHub Role",
+       default: "jingood2",
+     }); */
+
+    new servicecatalog.CloudFormationProduct(this, "GithubOIDCProduct", {
+      productName: "Github OIDC Provider Product2",
+      owner: "SK Cloud Transformation Group",
+      productVersions: [
+        /* {
+          productVersionName: "v1.0",
+          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(
+            new GithubOidcProviderConstruct(this, "GithubOIDCProvider", {
+              owner: owner.valueAsString,
+              repo: repo.valueAsString,
+              role: role.valueAsString,
+            }),
+          ),
+        }, */
+        {
+          productVersionName: "v1.0",
+          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromAsset(path.join(__dirname, "github-oidc-provider.template.json")),
+        },
+      ],
     });
-
-    deployRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"));
+ 
   }
 }
+
+
 
 // for development, use account/region from cdk cli
 const devEnv = {
@@ -34,6 +61,6 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, "bootstrap-dev", { env: devEnv });
+new MyStack(app, 'github-oidc-provider', { env: devEnv });
 
 app.synth();

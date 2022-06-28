@@ -1,13 +1,19 @@
 # read the workflow template
-WORKFLOW_TEMPLATE=$(cat .github/workflow-template.yaml)
+MAIN_WORKFLOW_TEMPLATE=$(cat .github/main-template.yaml)
+JOB_WORKFLOW_TEMPLATE=$(cat .github/job-template.yaml)
 
-# iterate each route in routes directory
-for ROUTE in $(ls projects); do
-    echo "generating workflow for projects/${ROUTE}"
+BUILD_ACCOUNT='037729278610'
+TARGET_DEPLOY_ACCOUNTS=('037729278610')
 
-    # replace template route placeholder with route name
-    WORKFLOW=$(echo "${WORKFLOW_TEMPLATE}" | sed "s/{{ROUTE}}/${ROUTE}/g")
+# ACCOUNT 수만큼 reusable template에 deploy-prod 추가
+for PROJECT in $(ls projects); do
+    echo "generating workflow for projects/${PROJECT}"
 
-    # save workflow to .github/workflows/{ROUTE}
-    echo "${WORKFLOW}" > .github/workflows/${ROUTE}.yaml
+    MAIN_WORKFLOW=$(echo "${MAIN_WORKFLOW_TEMPLATE}" | sed "s/{{PROJECT}}/${PROJECT}/g")
+    echo "${MAIN_WORKFLOW}" > .github/workflows/${PROJECT}.yaml
+
+    for ACCOUNT in ${TARGET_DEPLOY_ACCOUNTS[@]}; do
+        JOB_WORKFLOW=$(echo "${JOB_WORKFLOW_TEMPLATE}" | sed "s/{{TARGET_ACCOUNT}}/${ACCOUNT}/g" | sed "s/{{PROJECT}}/${PROJECT}/g")
+        echo "${JOB_WORKFLOW}" >> .github/workflows/${PROJECT}.yaml
+    done
 done
