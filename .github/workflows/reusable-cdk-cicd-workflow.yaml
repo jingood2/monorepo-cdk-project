@@ -28,6 +28,8 @@ on:
 
 env:
   CI: "true"
+  AWS_ACCOUNT_ID: ${{inputs.aws_account_id}}
+  EXECUTION_ROLE: ${{inputs.pipeline_execution_role}}
 
 jobs:
   cdk-build-deploy:
@@ -55,7 +57,7 @@ jobs:
       - name: assume role
         uses: aws-actions/configure-aws-credentials@master
         with:
-          role-to-assume:  arn:aws:iam::${{inputs.aws_account_id}}:role/${{inputs.pipeline_execution_role}}
+          role-to-assume:  arn:aws:iam::${{env.AWS_ACCOUNT_ID}}:role/${{env.EXECUTION_ROLE}}
           #role-to-assume:  arn:aws:iam::037729278610:role/github-deploy-role
           role-session-name: github-session
           aws-region: ap-northeast-2
