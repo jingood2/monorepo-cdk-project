@@ -24,3 +24,4 @@ jobs:
       aws_account_id: 037729278610
       stage: prod
       app_name: github-oidc-provider
+      pipeline_execution_role: github-deploy-role

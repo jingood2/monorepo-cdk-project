@@ -9,3 +9,4 @@
       aws_account_id: {{TARGET_ACCOUNT}}
       stage: prod
       app_name: {{PROJECT}}
+      pipeline_execution_role: github-deploy-role
