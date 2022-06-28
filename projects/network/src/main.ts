@@ -1,7 +1,7 @@
-import { App, Stack, StackProps } from 'aws-cdk-lib';
-import * as servicecatalog from 'aws-cdk-lib/aws-servicecatalog';
-import { Construct } from 'constructs';
-import { VPCProduct } from './lib/vpc-product';
+import { App, Stack, StackProps } from "aws-cdk-lib";
+import * as servicecatalog from "aws-cdk-lib/aws-servicecatalog";
+import { Construct } from "constructs";
+import { VPCProduct } from "./lib/vpc-product";
 //import { VPCV3Product } from './lib/vpc-v3-product';
 //import { VpcV2Product } from './lib/vpc-v2-product';
 
@@ -10,7 +10,6 @@ export class MyStack extends Stack {
     super(scope, id, props);
 
     // define resources here...
-
 
     // Create a product from a stack
     new servicecatalog.CloudFormationProduct(this, "VpcProduct", {
@@ -48,7 +47,7 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, "network", { env: devEnv, stackName: `${process.env.PROJECT_NAME}-${process.env.STAGE}` });
+new MyStack(app, "vpc", { env: devEnv, stackName: `${process.env.PROJECT_NAME}-${process.env.STAGE}` });
 // new MyStack(app, 'vpc-prod', { env: prodEnv });
 
 app.synth();
