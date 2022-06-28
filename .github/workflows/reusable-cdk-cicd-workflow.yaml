@@ -23,7 +23,7 @@ on:
         default: .
       pipeline_execution_role:
         type: string
-        required: true
+        required: false
         default: github-deploy-role
 
 env:
