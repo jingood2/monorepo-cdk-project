@@ -4,17 +4,16 @@ on:
   pull_request:
     branches:
       - main
-      - feat**
     types: [ closed ]
+  push:
+    branches:
+      - 'feat**'
     paths:
       - "projects/eks/**"
       - "./github/workflows/eks.yaml"
-  delete:
-    branches:
-      - 'feat**'
 
 jobs:
-  eks-037729278610:
+  eks:
     # reusable workflows MUST be in .github/workflows
     uses: ./.github/workflows/reusable-cdk-cicd-workflow.yaml
     permissions:

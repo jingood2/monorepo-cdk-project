@@ -1,19 +1,19 @@
 name: network
 
 on:
+  pull_request:
+    branches:
+      - main
+    types: [ closed ]
   push:
     branches:
-      - 'main'
       - 'feat**'
     paths:
       - "projects/network/**"
       - "./github/workflows/network.yaml"
-  delete:
-    branches:
-      - 'feat**'
 
 jobs:
-  network-037729278610:
+  network:
     # reusable workflows MUST be in .github/workflows
     uses: ./.github/workflows/reusable-cdk-cicd-workflow.yaml
     permissions:
