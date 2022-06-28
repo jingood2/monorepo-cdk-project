@@ -27,7 +27,7 @@ export class MyStack extends Stack {
      });
 
     new servicecatalog.CloudFormationProduct(this, "GithubOIDCProduct", {
-      productName: "Github OIDC Provider Product",
+      productName: "Github OIDC Provider Product2",
       owner: "SK Cloud Transformation Group",
       productVersions: [
         {
