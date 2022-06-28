@@ -1,8 +1,20 @@
 
-import { App, CfnParameter, Stack, StackProps } from 'aws-cdk-lib';
+import { App, CfnParameter, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
+import { Bucket, IBucket } from 'aws-cdk-lib/aws-s3';
 import * as servicecatalog from 'aws-cdk-lib/aws-servicecatalog';
 import { Construct } from 'constructs';
 import { GithubOidcProviderConstruct } from './github-oidc-provider-construct';
+
+export class SimpleStack extends Stack {
+  constructor(scope: Construct, id: string, props: StackProps) {
+    super(scope, id, props);
+
+    const simpleBucket: IBucket = new Bucket(this, "my-simple-bucket", {
+      autoDeleteObjects: true,
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
+  }
+}
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
@@ -32,17 +44,21 @@ export class MyStack extends Stack {
       productVersions: [
         {
           productVersionName: "v1.0",
-          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(new GithubOidcProviderConstruct(this, "GithubOIDCProvider", {
-            owner: owner.valueAsString,
-            repo: repo.valueAsString,
-            role: role.valueAsString,
-          })),
+          cloudFormationTemplate: servicecatalog.CloudFormationTemplate.fromProductStack(
+            new GithubOidcProviderConstruct(new SimpleStack(this,'s3', {}), "GithubOIDCProvider", {
+              owner: owner.valueAsString,
+              repo: repo.valueAsString,
+              role: role.valueAsString,
+            }),
+          ),
         },
       ],
     });
  
   }
 }
+
+
 
 // for development, use account/region from cdk cli
 const devEnv = {
