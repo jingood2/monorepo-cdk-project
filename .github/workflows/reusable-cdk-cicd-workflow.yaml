@@ -57,7 +57,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@master
         with:
           #role-to-assume: ${{ env.EXECUTION_ROLE }}
-          role-to-assume: ${{ format('arn:aws:iam::{0}:role/{1}', inputs.aws_account_id, inputs.pipeline_execution_role }}
+          role-to-assume: ${{ format('arn:aws:iam::{0}:role/{1}', inputs.aws_account_id, inputs.pipeline_execution_role) }}
           #role-to-assume:  arn:aws:iam::${{ inputs.aws_account_id }}:role/github-deploy-role
           #role-to-assume:  arn:aws:iam::037729278610:role/github-deploy-role
           role-session-name: github-session
