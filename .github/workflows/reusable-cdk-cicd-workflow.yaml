@@ -5,7 +5,7 @@ on:
     inputs:
       aws_account_id:
         required: true
-        type: number
+        type: string
       aws_region:
         type: string
         required: false
