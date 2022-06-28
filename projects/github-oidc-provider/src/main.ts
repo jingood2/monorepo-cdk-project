@@ -9,7 +9,7 @@ export class SimpleStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
 
-    const simpleBucket: IBucket = new Bucket(this, "my-simple-bucket", {
+    new Bucket(this, "my-simple-bucket", {
       autoDeleteObjects: true,
       removalPolicy: RemovalPolicy.DESTROY,
     });
