@@ -1,11 +1,16 @@
 name: {{PROJECT}}
 
 on:
-  push:
+  pull_request:
     branches:
-      - 'develop'
+      - main
+      - feat**
+    types: [ closed ]
     paths:
       - "projects/{{PROJECT}}/**"
       - "./github/workflows/{{PROJECT}}.yaml"
+  delete:
+    branches:
+      - 'feat**'
 
 jobs:
