@@ -24,7 +24,7 @@ on:
       pipeline_execution_role:
         type: string
         required: false
-        default: github-deploy-role
+        default: github-monorepo-cdk-role
 
 env:
   CI: "true"
