@@ -48,7 +48,7 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, "network", { env: devEnv, stackName: `${process.env.PROJECT_NAME}-${process.env.STAGE}` });
+new MyStack(app, "vpc", { env: devEnv, stackName: `${process.env.PROJECT_NAME}-${process.env.STAGE}` });
 // new MyStack(app, 'vpc-prod', { env: prodEnv });
 
 app.synth();
